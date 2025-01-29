@@ -31,7 +31,8 @@ jobs:
             - name: Build with Next.js
               run: |
                 cd portfolio-akemi
-                npx next build
+                npm run build
+                npm run export
 
             - name: Upload artifact
               uses: actions/upload-pages-artifact@v3
