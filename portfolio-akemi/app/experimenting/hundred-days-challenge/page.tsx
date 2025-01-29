@@ -1,5 +1,7 @@
 'use client';
+import React from 'react';
 import Hamburger from "@/app/ui/hundred-days-challenge/hamburger";
+import path from 'path';
 export default function Page() {
     return (
         <section className="py-12 bg-gray-900 text-gray-100 sm:py-12 lg:py-16">
@@ -42,10 +44,13 @@ export default function Page() {
                     </div>
                     <div className="flex flex-col bg-gray-100 shadow-md rounded-lg h-96">
                         <div className="m-3 bg-white flex flex-col rounded-md h-full">
-                            <div className="flex justify-center bg-slate-800 rounded-t-md p-2 h-full">
+                            <div className="flex justify-center items-center bg-slate-800 rounded-t-md p-2 h-full">
                                 <div className="">
-                                    <div className="w-[200px] h-[200px] bg-white rounded-full">
-                                        
+                                    <div className="w-[200px] h-[200px] bg-white rounded-full overflow-hidden relative">
+                                        <div className="absolute animate-daytonight w-[200px] h-[200px] z-0"></div>
+                                        <div className="absolute w-[34px] h-[34px] bg-yellow-300 rounded-full transform translate-x-[83px] translate-y-[153px] animate-sunset"></div>
+                                        <div className="absolute top-[85px] left-[35px] h-[57px] w-[116px] clip-triangle-left animate-leftshadow"></div>
+                                        <div className="absolute top-[85px] left-[35px] h-[57px] w-[116px] clip-triangle-right animate-rightshadow"></div>
                                     </div>
                                 </div>
                             </div>
