@@ -1,4 +1,5 @@
-import React, { useState, useEffect, use } from 'react';
+import Image from 'next/image';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { act } from 'react-dom/test-utils';
 
 interface Position {
@@ -143,7 +144,7 @@ const JuegoMouse: React.FC = () => {
     };
 
     // Función para mover el personaje
-    const moveCharacter = () => {
+    const moveCharacter = useCallback(() => {
         // Calcula la distancia entre la posición actual y la posición del mouse
         setPosition( (prev) => {
             const dx = mousePosition.left - prev.left;
@@ -161,7 +162,7 @@ const JuegoMouse: React.FC = () => {
                 left: prev.left + Math.cos(angle) * speed,
             };
         });
-    };
+    }, [mousePosition]);
 
     useEffect(() => {
         boxesPositions.forEach((box) => {
@@ -169,7 +170,7 @@ const JuegoMouse: React.FC = () => {
                 handleCollision();
             }
         });
-    }, [position]);
+    }, [position, boxesPositions]);
 
     useEffect(() => {
         window.addEventListener('mousemove', handleMouseMove);
@@ -180,7 +181,7 @@ const JuegoMouse: React.FC = () => {
             window.removeEventListener('mousemove', handleMouseMove);
             clearInterval(interval);
         };
-    }, [mousePosition]);
+    }, [mousePosition, moveCharacter]);
 
     return (
         <div>
@@ -233,8 +234,8 @@ const JuegoMouse: React.FC = () => {
                                 }}
                             >
                                 <div style={{flex: 1, padding: 20}}>
-                                    {modalContent[currentContentIndex].mediaType === 'image' && (
-                                        <img src={modalContent[currentContentIndex].mediaSource} style={{ width: 200 }} />
+                                    {modalContent[currentContentIndex].mediaType === 'image' && modalContent[currentContentIndex].mediaSource && (
+                                        <Image src={modalContent[currentContentIndex].mediaSource} width={200} height={100} alt='Modal Image' />
                                     )}
                                     {modalContent[currentContentIndex].mediaType === 'video' && (
                                         <video src={modalContent[currentContentIndex].mediaSource} style={{ width: 200 }} controls />
