@@ -6,7 +6,10 @@ const nextConfig = {
     reactStrictMode: true,
     images: {
         unoptimized: true,
-    }
+    },
+    env: {
+        NEXT_PUBLIC_BASE_PATH: isProd ? "/portfolio" : "",
+    },
 };
 
 export default nextConfig;

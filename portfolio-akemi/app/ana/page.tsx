@@ -6,7 +6,7 @@ import styles from "./styles.module.css";
 export default function Page() {
     const [isGameStarted, setIsGameStarted] = useState(false);
     const [isGameFinished, setIsGameFinished] = useState(false);
-
+    const basePath = process.env.NEXT_PUBLIC_BASE_PATH;
     const startGame = () => {
         setIsGameStarted(true);
     };
@@ -27,7 +27,7 @@ export default function Page() {
                         position: 'relative',
                         width: '100vw',
                         height: '100vh',
-                        backgroundImage: 'url("/sateliyork.png")',
+                        backgroundImage: `url(${basePath}/sateliyork.png)`,//'url("/sateliyork.png")',
                         backgroundSize: "cover",
                         backgroundPosition: "center",
                         overflow: 'hidden',
@@ -111,7 +111,7 @@ export default function Page() {
                                 alignItems: 'center',
                                 width: '100%',
                                 height: '100%',
-                                backgroundImage: 'url("/kiario.gif")',
+                                backgroundImage: `url(${basePath}/kiario.gif)`,//'url("/kiario.gif")',
                                 backgroundPosition: 'center',
                                 backgroundSize: 'cover',
                                 // background: 'rgba(0, 0, 0, 0.7)',
