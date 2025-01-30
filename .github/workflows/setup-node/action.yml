@@ -19,7 +19,6 @@ runs:
               ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
         - name: Install dependencies
           shell: bash
-          if: steps.cache_dependencies.outputs.cache-hit != 'true'
           run: |
             cd portfolio-akemi
             npm ci
