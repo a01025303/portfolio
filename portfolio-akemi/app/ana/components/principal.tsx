@@ -235,7 +235,7 @@ const JuegoMouse: React.FC = () => {
                             >
                                 <div style={{flex: 1, padding: 20}}>
                                     {modalContent[currentContentIndex].mediaType === 'image' && modalContent[currentContentIndex].mediaSource && (
-                                        <Image src={modalContent[currentContentIndex].mediaSource} width={200} height={100} alt='Modal Image' />
+                                        <Image src={modalContent[currentContentIndex].mediaSource!} width={200} height={100} alt='Modal Image' />
                                     )}
                                     {modalContent[currentContentIndex].mediaType === 'video' && (
                                         <video src={modalContent[currentContentIndex].mediaSource} style={{ width: 200 }} controls />
