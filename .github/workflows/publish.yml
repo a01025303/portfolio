@@ -32,7 +32,6 @@ jobs:
               run: |
                 cd portfolio-akemi
                 npm run build
-                npm run export
 
             - name: Upload artifact
               uses: actions/upload-pages-artifact@v3
