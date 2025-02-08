@@ -10,8 +10,12 @@
   },
   "dependencies": {
     "@types/tailwindcss": "^3.1.0",
+    "date-fns": "^4.1.0",
+    "firebase": "^11.2.0",
+    "framer-motion": "^12.0.6",
     "next": "^14.2.23",
     "react": "^18",
+    "react-datepicker": "^8.0.0",
     "react-dom": "^18"
   },
   "devDependencies": {
