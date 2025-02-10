@@ -8,3 +8,33 @@
     width: 100%;
     height: 100%;
 }
+
+/* Example custom styles for the datepicker */
+.customDatepicker :global(.react-datepicker) {
+    border: none !important;
+    transition: all 0.3s ease;
+}
+
+.customDatepicker :global(.react-datepicker__day--selected) {
+    background-color: #ff66b2 !important;
+    color: white !important;
+    border-radius: 50%;
+}
+
+.customDatepicker :global(.react-datepicker__day--selected:hover) {
+    background-color: #ff3385 !important;
+}
+
+.customDatepicker :global(.react-datepicker__header) {
+    background-color: #ff66b2 !important;
+    /* color: white !important; */
+}
+
+.customDatepicker :global(.react-datepicker__current-month) {
+    font-size: 18px !important;
+    font-weight: bold !important;
+    color: white !important;
+}
+.customDatepicker :global(.react-datepicker__day-name) {
+    color: white !important;  /* Pink text */
+}

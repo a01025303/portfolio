@@ -3,11 +3,12 @@
 import { useState, useEffect } from 'react';
 import { db, collection, addDoc } from '@/firebaseConfig';
 import Image from 'next/image';
-import dynamic from "next/dynamic";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Playfair_Display, Sacramento } from 'next/font/google';
+import styles from "../styles.module.css";
 
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH;
 const playfair = Playfair_Display({
     subsets: ['latin'],
     weight: ['400', '700'], 
@@ -19,38 +20,37 @@ const sacramento = Sacramento({
 });
   
   const foodTypes = [
-    { name: "Italiana", img: "/images/italian.jpg" },
-    { name: "Mexicana", img: "/images/mexican.jpg" },
-    { name: "Japonesa", img: "/images/japanese.jpg" },
-    { name: "Libanesa", img: "/images/lebanese.jpg" },
-    { name: "China", img: "/images/chinese.jpg" },
-    { name: "Mariscos", img: "/images/seafood.jpg" },
+    { name: "Italiana", img: `${basePath}/italiana.jpg` },
+    { name: "Mexicana", img: `${basePath}/mexicana.jpg` },
+    { name: "Japonesa", img: `${basePath}/japonesa.jpg` },
+    { name: "Libanesa", img: `${basePath}/libanesa.jpg` },
+    { name: "China", img: `${basePath}/china.jpg` },
+    { name: "Mariscos", img: `${basePath}/mariscos.jpg` },
   ];
   
   const dessertsCoffee = [
-    { name: "Helados", img: "/images/icecream.jpg" },
-    { name: "Pastel", img: "/images/cake.jpg" },
-    { name: "Chocolate", img: "/images/chocolate.jpg" },
-    { name: "Té", img: "/images/bubbletea.jpg" },
-    { name: "Café", img: "/images/coffee.jpg" },
-    { name: "Donas", img: "/images/donuts.jpg" },
-    { name: "Milkshake", img: "/images/milkshake.jpg" },
-    { name: "Churros", img: "/images/churros.jpg" },
-    { name: "Crepas", img: "/images/crepes.jpg" },
+    { name: "Helados", img: `${basePath}/helado.jpg` },
+    { name: "Pastel", img: `${basePath}/pastel.jpg` },
+    { name: "Chocolate", img: `${basePath}/chocolate.jpg` },
+    { name: "Té", img: `${basePath}/bubbletea.jpg` },
+    { name: "Café", img: `${basePath}/cafe.jpg` },
+    { name: "Donas", img: `${basePath}/donas.jpg` },
+    { name: "Milkshake", img: `${basePath}/milkshake.jpg` },
+    { name: "Churros", img: `${basePath}/churros.jpg` },
+    { name: "Crepas", img: `${basePath}/crepas.jpg` },
   ];
   
   const activities = [
-    { name: "Cine", img: "/images/movie.jpg" },
-    { name: "Arcade", img: "/images/arcade.jpg" },
-    { name: "Museo", img: "/images/museum.jpg" },
-    { name: "Parque", img: "/images/park.jpg" },
-    { name: "Zoológico", img: "/images/zoo.jpg" },
-    { name: "Pista de hielo", img: "/images/icerink.jpg" },
+    { name: "Cine", img: `${basePath}/cine.jpg` },
+    { name: "Arcade", img: `${basePath}/arcade.jpg` },
+    { name: "Museo", img: `${basePath}/museo.jpg` },
+    { name: "Parque", img: `${basePath}/parque.jpg` },
+    { name: "Zoológico", img: `${basePath}/zoo.jpg` },
+    { name: "Pista de hielo", img: `${basePath}/patinaje.jpg` },
   ];
   const timeOptions = Array.from({ length: 8 }, (_, i) => `${13 + i}:00`);
 
 export default function Plan() {
-    const basePath = process.env.NEXT_PUBLIC_BASE_PATH;
     const [pagina, setPagina] = useState(0);
     const [fecha, setFecha] = useState<Date | null>(null);
     const [hora, setHora] = useState<string | null>(null);
@@ -75,12 +75,12 @@ export default function Plan() {
 
       const submitChoices = async () => {
         try {
-          await addDoc(collection(db, "valentine_choices"), {
-            date: fecha?.toDateString(),
-            time: hora,
-            food: comida,
-            dessert: postre,
-            activity: actividad,
+          await addDoc(collection(db, "plan_valentines2025"), {
+            fecha: fecha?.toDateString(),
+            hora: hora,
+            comida: comida,
+            postre: postre,
+            actividad: actividad,
             timestamp: new Date(),
           });
           alert("¡Tus opciones han sido guardadas! ❤️");
@@ -95,130 +95,202 @@ export default function Plan() {
             padding: "20px", 
             backgroundImage: `url(${basePath}/valentines2025.jpg)`, 
             height: "100vh",
-        }}>
-      <h1>¡Sí, acepto! ❤️</h1>
-
-      {/* Date Selection */}
-      {pagina === 0 && (
-        <div>
-          <h2>Selecciona una fecha</h2>
-          <DatePicker selected={fecha} onChange={(date) => setFecha(date)} dateFormat="dd/MM/yyyy" minDate={new Date()} inline />
-          <button onClick={() => setPagina(1)} disabled={!fecha} style={{ marginTop: "10px" }}>
-            Siguiente
-          </button>
-        </div>
-      )}
-
-      {/* Time Selection */}
-      {pagina === 1 && (
-        <div>
-          <h2>Selecciona una hora</h2>
-          <div style={{ display: "flex", gap: "10px", justifyContent: "center", flexWrap: "wrap" }}>
-            {timeOptions.map((time) => (
-              <button
-                key={time}
-                onClick={() => setHora(time)}
+            display: "flex",
+            justifyContent: "center",
+            flexDirection: "column",
+            alignItems: "center",
+        }}
+        className={playfair.className}>
+            <h1 style={{ color: "#ab1c1c", marginBottom: "30px", fontSize: "20px"}}>Planea la cita!</h1>
+                  {/* Main box simulating a mini browser window */}
+                  <div
                 style={{
-                  padding: "8px",
-                  borderRadius: "8px",
-                  cursor: "pointer",
-                  backgroundColor: hora === time ? "#ff69b4" : "#ddd",
-                  color: hora === time ? "white" : "black",
+                    position: "relative", // Makes child elements (header) position relative to this
+                    backgroundColor: "#fef7fc",
+                    minHeight: "60vh",
+                    width: "60vw",
+                    borderRadius: "10px",
+                    boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
+                    overflow: "hidden",
+                    display: "flex",
+                    alignItems: "center",
+                    // flexDirection: "column"
                 }}
-              >
-                {time}
-              </button>
-            ))}
-          </div>
-          <button onClick={() => setPagina(2)} disabled={!hora} style={{ marginTop: "10px" }}>
-            Siguiente
-          </button>
-        </div>
-      )}
-
-      {/* Food Selection */}
-      {pagina === 2 && (
-        <div>
-          <h2>Selecciona hasta 3 tipos de comida</h2>
-          <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "10px" }}>
-            {foodTypes.map((food) => (
-              <button
-                key={food.name}
-                onClick={() => toggleSelection(comida, setComida, food.name)}
-                style={{
-                  cursor: "pointer",
-                  padding: "10px",
-                  borderRadius: "8px",
-                  backgroundColor: comida.includes(food.name) ? "#ff69b4" : "#ddd",
-                  color: comida.includes(food.name) ? "white" : "black",
-                }}
+            >
+                {/* Fake Browser Header (Fixed at the top) */}
+                <div 
+                    style={{
+                        position: "absolute", // Sticks to the top inside the box
+                        top: 0,
+                        left: 0,
+                        width: "100%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "flex-start",
+                        background: "#ffdede",
+                        padding: "5px 15px",
+                        borderTopLeftRadius: "10px",
+                        borderTopRightRadius: "10px",
+                        height: "30px" // Fixed height
+                    }}
                 >
-                <Image src={food.img} alt={food.name} width={100} height={100} />
-                <p>{food.name}</p>
-                </button>
-            ))}
-          </div>
-          <button onClick={() => setPagina(3)} disabled={comida.length === 0}>
-            Siguiente
-          </button>
-        </div>
-      )}
+                    {/* Fake Browser Buttons */}
+                    <div style={{ display: "flex", gap: "5px" }}>
+                        <span style={{ width: "12px", height: "12px", background: "#ff5f56", borderRadius: "50%" }}></span>
+                        <span style={{ width: "12px", height: "12px", background: "#ffbd2e", borderRadius: "50%" }}></span>
+                        <span style={{ width: "12px", height: "12px", background: "#27c93f", borderRadius: "50%" }}></span>
+                    </div>
+                </div>
+    
+                {/* Content Inside (Pushed down to avoid overlap) */}
+                <div style={{ padding: "40px 0px 40px 0px", textAlign: "center", flexGrow: 1 }}>
+                    {/* Date Selection */}
+                    {pagina === 0 && (
+                            <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                            <h2 style={{color: "#ab1c1c", margin: "10px"}}>Elige la fecha</h2>
+                            <div style={{ display: "flex", justifyContent: "center", flexDirection: "row", alignItems: "center" }}>
+                                <div className={styles.customDatepicker} style={{marginTop: "10px"}}>
+                                    <DatePicker selected={fecha} onChange={(date) => setFecha(date)} dateFormat="dd/MM/yyyy" minDate={new Date()} inline />
+                                </div>
+                            </div>
+                            <button onClick={() => setPagina(1)} disabled={!fecha} style={{ marginTop: "15px", color:"#ab1c1c", border: "1px solid #ab1c1c", padding: "10px", borderRadius: "8px"}}>
+                                Siguiente
+                            </button>
+                            </div>
+                        )}
 
-      {/* Dessert/Coffee Selection */}
-      {pagina === 3 && (
-        <div>
-          <h2>Selecciona hasta 3 postres o cafés</h2>
-          <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "10px" }}>
-            {dessertsCoffee.map((dessert) => (
-              <button
-                key={dessert.name}
-                onClick={() => toggleSelection(postre, setPostre, dessert.name)}
-                style={{
-                  cursor: "pointer",
-                  padding: "10px",
-                  borderRadius: "8px",
-                  backgroundColor: postre.includes(dessert.name) ? "#ff69b4" : "#ddd",
-                  color: postre.includes(dessert.name) ? "white" : "black",
-                }}
-                >
-                <Image src={dessert.img} alt={dessert.name} width={100} height={100} />
-                <p>{dessert.name}</p>
-                </button>
-            ))}
-          </div>
-          <button onClick={() => setPagina(4)} disabled={postre.length === 0}>
-            Siguiente
-          </button>
-        </div>
-      )}
+                        {/* Time Selection */}
+                        {pagina === 1 && (
+                            <div>
+                            <h2 style={{color: "#ab1c1c", margin: "10px"}}>Elige la hora</h2>
+                            <div style={{ display: "flex", gap: "10px", justifyContent: "center", flexWrap: "wrap", marginTop: "10px" }}>
+                                {timeOptions.map((time) => (
+                                <button
+                                    key={time}
+                                    onClick={() => setHora(time)}
+                                    style={{
+                                    padding: "8px",
+                                    borderRadius: "8px",
+                                    cursor: "pointer",
+                                    backgroundColor: hora === time ? "#ff69b4" : "#ffdede",
+                                    color: hora === time ? "white" : "black",
+                                    }}
+                                >
+                                    {time}
+                                </button>
+                                ))}
+                            </div>
+                            <div style={{ display: "flex", justifyContent: "center", margin: "20px", gap: "20px" }}>
+                                <button onClick={() => setPagina(0)} style={{ marginTop: "15px", color:"#ab1c1c", border: "1px solid #ab1c1c", padding: "10px", borderRadius: "8px"}}>
+                                    Anterior
+                                </button>
+                                <button onClick={() => setPagina(2)} disabled={!hora} style={{ marginTop: "15px", color:"#ab1c1c", border: "1px solid #ab1c1c", padding: "10px", borderRadius: "8px"}}>
+                                    Siguiente
+                                </button>
+                            </div>
+                            </div>
+                        )}
 
-      {/* Activity Selection */}
-      {pagina === 4 && (
-        <div>
-          <h2>Selecciona hasta 3 actividades</h2>
-          <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "10px" }}>
-            {activities.map((activity) => (
-              <button
-                key={activity.name}
-                onClick={() => toggleSelection(actividad, setActividad, activity.name)}
-                style={{
-                  cursor: "pointer",
-                  padding: "10px",
-                  borderRadius: "8px",
-                  backgroundColor: actividad.includes(activity.name) ? "#ff69b4" : "#ddd",
-                  color: actividad.includes(activity.name) ? "white" : "black",
-                }}
-                >
-                <Image src={activity.img} alt={activity.name} width={100} height={100} />
-                <p>{activity.name}</p>
-                </button>
-            ))}
-          </div>
-          <button onClick={submitChoices} disabled={actividad.length === 0}>
-            Confirmar ❤️
-          </button>
+                        {/* Food Selection */}
+                        {pagina === 2 && (
+                            <div>
+                            <h2 style={{color: "#ab1c1c", margin: "10px"}}>Elige top 3 tipos de comida</h2>
+                            <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "10px", marginTop: "10px" }}>
+                                {foodTypes.map((food) => (
+                                <button
+                                    key={food.name}
+                                    onClick={() => toggleSelection(comida, setComida, food.name)}
+                                    style={{
+                                    cursor: "pointer",
+                                    padding: "10px",
+                                    borderRadius: "8px",
+                                    backgroundColor: comida.includes(food.name) ? "#ff69b4" : "#ffdede",
+                                    color: comida.includes(food.name) ? "white" : "black",
+                                    }}
+                                    >
+                                    <Image src={food.img} alt={food.name} width={100} height={100} layout="intrinsic" objectFit="cover" />
+                                    <p>{food.name}</p>
+                                    </button>
+                                ))}
+                            </div>
+                            <div style={{ display: "flex", justifyContent: "center", margin: "20px", gap: "20px" }}>
+                                <button onClick={() => setPagina(1)} style={{ marginTop: "15px", color:"#ab1c1c", border: "1px solid #ab1c1c", padding: "10px", borderRadius: "8px"}}>
+                                    Anterior
+                                </button>
+                                <button onClick={() => setPagina(3)} disabled={!hora} style={{ marginTop: "15px", color:"#ab1c1c", border: "1px solid #ab1c1c", padding: "10px", borderRadius: "8px"}}>
+                                    Siguiente
+                                </button>
+                            </div>
+                            </div>
+                        )}
+
+                        {/* Dessert/Coffee Selection */}
+                        {pagina === 3 && (
+                            <div>
+                            <h2 style={{color: "#ab1c1c", margin: "10px"}}>Elige top 3 postres o cafés</h2>
+                            <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "10px", marginTop: "10px" }}>
+                                {dessertsCoffee.map((dessert) => (
+                                <button
+                                    key={dessert.name}
+                                    onClick={() => toggleSelection(postre, setPostre, dessert.name)}
+                                    style={{
+                                    cursor: "pointer",
+                                    padding: "10px",
+                                    borderRadius: "8px",
+                                    backgroundColor: postre.includes(dessert.name) ? "#ff69b4" : "#ffdede",
+                                    color: postre.includes(dessert.name) ? "white" : "black",
+                                    }}
+                                    >
+                                    <Image src={dessert.img} alt={dessert.name} width={100} height={100} />
+                                    <p>{dessert.name}</p>
+                                    </button>
+                                ))}
+                            </div>
+                            <div style={{ display: "flex", justifyContent: "center", margin: "20px", gap: "20px" }}>
+                                <button onClick={() => setPagina(2)} style={{ marginTop: "15px", color:"#ab1c1c", border: "1px solid #ab1c1c", padding: "10px", borderRadius: "8px"}}>
+                                    Anterior
+                                </button>
+                                <button onClick={() => setPagina(4)} disabled={!hora} style={{ marginTop: "15px", color:"#ab1c1c", border: "1px solid #ab1c1c", padding: "10px", borderRadius: "8px"}}>
+                                    Siguiente
+                                </button>
+                            </div>
+                            </div>
+                        )}
+
+                        {/* Activity Selection */}
+                        {pagina === 4 && (
+                            <div>
+                            <h2 style={{color: "#ab1c1c", margin: "10px"}}>Elige top 3 actividades</h2>
+                            <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "10px", marginTop: "10px" }}>
+                                {activities.map((activity) => (
+                                <button
+                                    key={activity.name}
+                                    onClick={() => toggleSelection(actividad, setActividad, activity.name)}
+                                    style={{
+                                    cursor: "pointer",
+                                    padding: "10px",
+                                    borderRadius: "8px",
+                                    backgroundColor: actividad.includes(activity.name) ? "#ff69b4" : "#ffdede",
+                                    color: actividad.includes(activity.name) ? "white" : "black",
+                                    }}
+                                    >
+                                    <Image src={activity.img} alt={activity.name} width={100} height={100} />
+                                    <p>{activity.name}</p>
+                                    </button>
+                                ))}
+                            </div>
+                            <div style={{ display: "flex", justifyContent: "center", margin: "20px", gap: "20px" }}>
+                                <button onClick={() => setPagina(3)} style={{ marginTop: "15px", color:"#ab1c1c", border: "1px solid #ab1c1c", padding: "10px", borderRadius: "8px"}}>
+                                    Anterior
+                                </button>
+                                <button onClick={submitChoices} disabled={actividad.length === 0} style={{ marginTop: "15px", color:"#ab1c1c", border: "1px solid #ab1c1c", padding: "10px", borderRadius: "8px"}}>
+                                    Confirmar ❤️
+                                </button>
+                            </div>
+                            </div>
+                        )}
+                </div>
         </div>
-      )}
     </div>
     );
 }
